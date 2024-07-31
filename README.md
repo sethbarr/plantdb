@@ -79,10 +79,10 @@ Name: long_val, dtype: int64
 
 I explored a few approaches to analyse these data including `XGboost` on the genome size `Cval` and the number of insect species `No_bugs` that attack the plant. In doing so, I standardized the values to help the model, and imputed values using KNN. This yeilded some patterns of contribution to the model fit that highlight the importance of soil nutrition in predicting genome size and longevity and dicliny in predicting the number of insect species that attack a plant. However this approach does not account for the non-independence of the data due to shared ancestry.
 
-![image](img\feat_imp_cval.png)
+![image](img/feat_imp_cval.png)
 _Feature importance for genome size_
 
-![image](img\feat_imp_insects.png)
+![image](img/feat_imp_insects.png)
 _Feature importance for number of insects_
 
 I then used a phylogenetic generalized least squares approach to account for the shared ancestry of the data. This approach is a linear model that includes a covariance matrix that accounts for the shared ancestry of the data. 
@@ -111,7 +111,7 @@ log_long_val    -0.946    0.935 -1.012 0.312  -2.778  0.886
 Group Var       45.973                                     
 ===========================================================
 ```
-![image](img\nutr_v_cval_scaled.png)
+![image](img/nutr_v_cval_scaled.png)
 The number of insect species described as affecting a species is correlated with longevity. And negatively related to dicliny (not sure how to interpret that, the greater the dicliny value, the more hermaphroditic it is. See above for coding of age and dicliny levels.)
 ```
           Mixed Linear Model Regression Results
@@ -136,4 +136,4 @@ Group Var       98.179
 ```
 
 <!-- insert image -->
-![image](img\insect_v_long_dicliny.png)
+![image](img/insect_v_long_dicliny.png)
