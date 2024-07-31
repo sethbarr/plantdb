@@ -1,0 +1,49 @@
+```{R, get_package}
+# install.packages("devtools")
+Sys.setenv(GITHUB_PAT = "PAT GOES HERE")
+devtools::install_github("jinyizju/U.PhyloMaker")
+library("U.PhyloMaker")
+```
+
+Access megatrees here: https://github.com/megatrees/plant_20221117
+
+Get the sp list from prev analyses
+
+```{R loadDAt}
+# Load the necessary package
+library(stringr)
+
+df <- read.csv("./data/cleaned_20240729", header=T)
+head(df)
+
+# Convert the text column to title case
+df$plant_name <- str_to_title(tolower(df$plant_name))
+df$genus <- str_to_title(tolower(df$genus))
+df$family <- str_to_title(tolower(df$family))
+
+# Print the updated data frame
+head(df)
+dim(df)
+sp.list <- df$plant_name
+# sp.list https://github.com/megatrees/plant_20221117/blob/main/plant_megatree.tre
+megatree <- read.tree('https://raw.githubusercontent.com/megatrees/plant_20221117/main/plant_megatree.tre')
+# head(megatree)
+
+gen.list <- read.csv('https://github.com/megatrees/plant_20221117/raw/main/plant_genus_list.csv', sep=",")
+head(gen.list)
+dim(gen.list)
+
+# Find the overlap
+overlap <- intersect(df$genus, gen.list$genus)
+
+# Print the overlapping elements
+print(length(overlap))
+# decent overlap 584
+
+result <- phylo.maker(sp.list, megatree, gen.list, nodes.type = 1, scenario = 3)
+result
+
+result$phylo
+write.tree(result$phylo, "./data/pruned_megatree_20240730.tre")
+write.csv(result$sp.list, "./data/species_list_20240730.csv")
+```
